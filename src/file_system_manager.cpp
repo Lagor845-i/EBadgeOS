@@ -7,8 +7,7 @@
 
 SPIClass sdSPI(FSPI);
 
-File_System_Manager::File_System_Manager(System& system_services)
-    : _system_services(system_services) {
+File_System_Manager::File_System_Manager(systemQueues* system_queues):_system_queues(system_queues) {
     sdSPI.begin(
         SD_CLK,
         SD_MISO,
@@ -16,6 +15,7 @@ File_System_Manager::File_System_Manager(System& system_services)
         SD_CS
     );
     if (!SD.begin(SD_CS,sdSPI,10000000,"/sd",30,true)) {
+        _system_queues->debug_manager
         _system_services.systemLog("No SD card installed...");
         _system_services.error("No SD Card Installed");
     } else {
@@ -26,6 +26,29 @@ File_System_Manager::File_System_Manager(System& system_services)
         }
     }
 };
+
+void File_System_Manager::begin() {
+    while (true) {
+        queuePacket* packet = nullptr;
+        xQueueReceive(_system_queues->file_system_manager,packet,portMAX_DELAY);
+        switch (packet->operation) {
+            case 0:
+
+                break;
+            case 1:
+                
+                break;
+        }
+    }
+}
+
+
+void File_System_Manager::saveToFile(std::string file_name,uint8_t* bytes,std::string loc) {
+    std::string file = loc + file_name;
+    File file_handle = SD.open(file.c_str(),FILE_WRITE);
+    file_handle.write(*bytes);
+    file_handle.close();
+}
 
 File File_System_Manager::getFile(String file_loc) {
     return SD.open(file_loc);

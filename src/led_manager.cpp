@@ -1,15 +1,24 @@
 #include "led_manager.h"
 #include <Adafruit_NeoPixel.h>
 
-
 Adafruit_NeoPixel led_strip(LED_COUNT,LED_PIN,NEO_GRB + NEO_KHZ800);
 
-Led_Manager::Led_Manager(System& system_services) {};
+Led_Manager::Led_Manager(systemQueues* system_queues):_system_queues(system_queues) {};
 
 void Led_Manager::begin() {
     led_strip.begin();
     led_strip.setBrightness(20);
     led_strip.show();
+    while (true) {
+        queuePacket* packet = nullptr;
+        xQueueReceive(_system_queues->led_manager,packet,portMAX_DELAY);
+        switch (packet->operation) {
+            case 0:
+                break;
+            case 1:
+                clearLeds();
+        }
+    }
 };
 
 void Led_Manager::setLeds(uint8_t colors[LED_COUNT][3]) {

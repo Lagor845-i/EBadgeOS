@@ -3,3 +3,10 @@ Application Manager
     This will otherwise result in a memory leak.
 
 Application Manager - os - Core Communication Manager
+    The _os_api should only have access to these locations
+
+platformio.ini
+    Be sure to remove the debug setting when setting up in release.
+
+Display Manager
+    Add in every function needed by the end user!

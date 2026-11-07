@@ -8,4 +8,3 @@
 #include "bluetooth_manager.h"
 #include "file_system_manager.h"
 #include "application_manager.h"
-#include "core_communication_manager.h"

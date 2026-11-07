@@ -1,13 +1,14 @@
 #include <Arduino.h>
-#include <freertos/queue.h>
+
+#include "core_queues.h"
 
 #define DEBUG_ON true
 #define DEBUG_OFF false
 
 class Debug_Manager {
     public:
-        Debug_Manager();
-        void begin(unsigned long serial_speed);
+        Debug_Manager(systemQueues* system_queues);
+        void begin();
         void stop();
         void set(bool debug_value);
         void systemLog(String msg);
@@ -15,4 +16,5 @@ class Debug_Manager {
     
     private:
         bool _on = false;
+        systemQueues* _system_queues;
 };

@@ -1,13 +1,14 @@
 #pragma once
 
-#include "services.h"
+#include "core_queues.h"
 
 class Input_Manager {
     public:
-        Input_Manager(System& system_services);
+        Input_Manager(systemQueues* system_queues);
         Input sysGetInput();
+        void begin();
 
     private:
         Input stuff;
-        System _system_services;
+        systemQueues* _system_queues;
 };

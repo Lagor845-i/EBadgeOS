@@ -20,7 +20,6 @@ Then upload and check the debug again...
 
 extern "C" void* os_api;
 
-
 //C++ Compatibility layer. 
 extern "C" void elf_throw_length_error(const char*) asm("_ZSt20__throw_length_errorPKc");
 extern "C" void elf_throw_bad_allocv_error(const char*) asm("_ZSt17__throw_bad_allocv");

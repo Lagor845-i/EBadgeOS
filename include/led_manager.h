@@ -1,7 +1,7 @@
 #pragma once
 #include <Adafruit_NeoPixel.h>
 
-#include "services.h"
+#include "core_queues.h"
 
 #define LED_PIN 7
 #define LED_COUNT 23
@@ -10,8 +10,11 @@ extern Adafruit_NeoPixel led_strip;
 
 class Led_Manager {
     public:
-        Led_Manager(System& system_services);
+        Led_Manager(systemQueues* system_queues);
         void begin();
         void setLeds(uint8_t colors[LED_COUNT][3]);
         void clearLeds();
+
+    private:
+        systemQueues* _system_queues;
 };

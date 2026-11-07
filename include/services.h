@@ -7,7 +7,7 @@
 
 struct System {
   //Debug functions
-  std::function<void(String)> systemLog; //
+  std::function<void(String)> systemLog; //s
   std::function<void(String)> appLog; //
   std::function<void(String)> error; 
   std::function<bool()> getDebugOn;
@@ -25,10 +25,12 @@ struct System {
   std::function<void(uint8_t,uint8_t)> setAled;
 
   //Display functions
-  std::function<int()> getDisplayWidth;
-  std::function<int()> getDisplayHeight;
+  std::function<int()> getDisplayWidth; //
+  std::function<int()> getDisplayHeight; //
   std::function<void(LGFX_Sprite*)> setDisplayBuffer; //
   std::function<void()> updateDisplay; //
+  std::function<void(std::string)> displayNotification; //
+  std::function<bool()> currentNotification; //
 
   //Wifi functions
   std::function<SSIDS()> getWifiSSIDS;
@@ -40,6 +42,8 @@ struct System {
 
   std::function<void(std::string,int)> connectToWifi;
   std::function<bool(std::string,std::string)> setBackgroundDownload;
+  std::function<bool()> doingCurrentDownload;
+  std::function<std::string()> currentDownloadName; 
 
   //System Health
   std::function<int()> getTotalMemory;

@@ -18,7 +18,9 @@ void os::quitApp() {
 }
 
 //Debug Functions
-
+/*
+Logs to the USB C Port over serial
+*/
 bool os::log(std::string text) {
     std::string* temp_text = new std::string(text);
     if (xQueueSend(_os_api->log_queue.send_queue, &temp_text, 0) == pdTRUE) {
@@ -143,6 +145,16 @@ void os::getDisplayInfo(int data[2]) {
     data[1] = _os_api->display_info.display_height;
 }
 
+/*
+Sends a notification to show up on the lower half of the screen
+*/
+bool os::sendNotification(std::string text) {
+    std::string* temp_text = new std::string(text);
+    if (xQueueSend(_os_api->notification_buffer.send_queue,temp_text,0) != pdTRUE) {
+        return false;
+    } return true;
+}
+
 //IO Commands
 /*
 Gets system input from buttons, joystick, and accelerometer
@@ -152,7 +164,7 @@ Input os::getInput() {
 }
 
 void os::setALEDS(uint8_t color[23][3]) {
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 23; i++) {
         _os_api->set_aleds.leds_colors[i][0] = color[i][0];
         _os_api->set_aleds.leds_colors[i][1] = color[i][1];
         _os_api->set_aleds.leds_colors[i][2] = color[i][2];

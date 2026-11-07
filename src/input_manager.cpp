@@ -22,8 +22,7 @@
 #define L_BUTTON 21
 #define R_BUTTON 10
 
-Input_Manager::Input_Manager(System& system_services) {
-    _system_services = system_services;
+Input_Manager::Input_Manager(systemQueues* system_queues):_system_queues(system_queues) {
     pinMode(A_BUTTON,INPUT);
     pinMode(B_BUTTON,INPUT);
     pinMode(U_BUTTON,INPUT);
@@ -45,6 +44,18 @@ Input_Manager::Input_Manager(System& system_services) {
     data = Wire.read();
     _system_services.systemLog(String(data));*/
 };
+
+void Input_Manager::begin() {
+    while (true) {
+        queuePacket* packet = nullptr;
+        xQueueReceive(_system_queues->input_manager,packet,portMAX_DELAY);
+        switch (packet->operation) {
+            case 0:
+                sysGetInput();
+                break;
+        }
+    }
+}
 
 Input Input_Manager::sysGetInput() {
     stuff.a = digitalRead(A_BUTTON);

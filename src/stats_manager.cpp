@@ -1,7 +1,6 @@
 #include "stats_manager.h"
 
-Stats_Manager::Stats_Manager(System& system_services) 
-    : _system_services(system_services) {
+Stats_Manager::Stats_Manager(systemQueues* system_queues):_system_queues(system_queues) {
 
 }
 

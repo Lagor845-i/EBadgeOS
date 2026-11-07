@@ -4,15 +4,12 @@
 #include <Arduino.h>
 #include <string.h>
 
-#include "config.h"
-#include "services.h"
-#include "core_api.h"
-#include "os.h"
+#include "core_queues.h"
 #include "elf_symbols.h"
 
 class Application_Manager {
   public:
-    Application_Manager(crossCoreBuffers* buffers);
+    Application_Manager(systemQueues* system_queues);
     void Start();
     
     //Api calls from application
@@ -22,14 +19,11 @@ class Application_Manager {
     bool printToConsoleApp(String text);
   
   private:
-    bool isElf(File file);
     bool bootFile(uint8_t* file_bytes);
     uint8_t* recieveElfFile();
-    File* recieveFile();
     bool sendAppApi();
 
-    osApi* _app_services;
-    crossCoreBuffers* _cross_core_buffers;
+    systemQueues* _system_queues;
     String app_folder;
     esp_elf_t current_app;
     String _change_app_to;

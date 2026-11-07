@@ -4,23 +4,14 @@ extern "C" {
   void* os_api = nullptr;
 }
 
-Application_Manager::Application_Manager(crossCoreBuffers* buffers):_cross_core_buffers(buffers) {
+Application_Manager::Application_Manager(systemQueues* system_queues):_system_queues(system_queues) {
   printToConsole("Starting Application Manager");
-  _app_services = new osApi{};
-  _app_services->version = FIRMWARE_VERSION;
-  _app_services->recieve_wifi_ssids.recieve_queue = xQueueCreate(10,sizeof(std::string*));
-  _app_services->send_tcp_over_wifi.send_queue = xQueueCreate(10,sizeof(std::string*));
-  _app_services->request_download.send_queue = xQueueCreate(5,sizeof(std::string*));
-  _app_services->log_queue.send_queue = xQueueCreate(10,sizeof(std::string*));
-  os_api = _app_services;
   register_custom_elf_symbols();
 }
 
 void Application_Manager::Start() {
-  sendAppApi();
-  printToConsole("Sent App Api");
   requestELFFile(BOOT_APP);
-  printToConsole("Requested ELF file: " + String(BOOT_APP));
+  sendDebug("Requested ELF file: " + std::string(BOOT_APP),_system_queues->debug_manager);
   bool first = true;
   bool running = true;
   while (running) {
@@ -45,20 +36,6 @@ void Application_Manager::Start() {
   }
 }
 
-bool Application_Manager::sendAppApi() {
-  _cross_core_buffers->send_elf_api.os_api = _app_services;
-  _cross_core_buffers->send_elf_api.new_api = true;
-  return true;
-}
-
-bool Application_Manager::printToConsole(String text) {
-  if (_cross_core_buffers->console_buffer.print_ready == false) {
-    _cross_core_buffers->console_buffer.text = text;
-    _cross_core_buffers->console_buffer.print_ready = true;
-    return true;
-  } return false;
-}
-
 bool Application_Manager::isElf(File file) {
   if (String(file.name()).endsWith(".app")) {return true;}
   return false;
@@ -81,7 +58,9 @@ uint8_t* Application_Manager::recieveElfFile() {
 
 //Used chatgpt on this function for assistance with the ELF loading.
 bool Application_Manager::bootFile(uint8_t* file_bytes) {
-  esp_elf_init(&current_app);
+  if (esp_elf_init(&current_app) != ESP_OK) {
+    return false;
+  }
 
   if (esp_elf_relocate(&current_app,file_bytes) != ESP_OK) {
     printToConsole("Invalid Elf Configuration");

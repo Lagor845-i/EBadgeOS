@@ -1,11 +1,27 @@
 #include "debug_manager.h"
 
-Debug_Manager::Debug_Manager() {
+Debug_Manager::Debug_Manager(systemQueues* system_queues):_system_queues(system_queues) {
     
 };
 
-void Debug_Manager::begin(unsigned long serial_speed) {
-    Serial.begin(serial_speed);
+void Debug_Manager::begin() {
+    Serial.begin(DEBUG_RATE);
+    _on = DEBUG;
+    while (true) {
+        queuePacket* packet = nullptr;
+        xQueueReceive(_system_queues->debug_manager,packet,portMAX_DELAY);
+        switch (packet->operation) {
+            case Print_System_Debug:
+                systemLog(String(*static_cast<std::string*>(packet->data)->c_str()));
+                break;
+            case Print_App_Debug:
+                applicationLog(String(*static_cast<std::string*>(packet->data)->c_str()));
+                break;
+            case Toggle_Debug:
+                set(*static_cast<bool*>(packet->data));
+                break;
+        }
+    }
 }
 
 void Debug_Manager::stop() {
@@ -30,5 +46,7 @@ void Debug_Manager::systemLog(String msg) {
 };
 
 void Debug_Manager::applicationLog(String msg) {
-    Serial.println("[Application] "+msg);
+    if (_on) {
+        Serial.println("[Application] "+msg);
+    }
 };

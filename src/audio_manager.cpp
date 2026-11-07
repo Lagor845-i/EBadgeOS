@@ -2,7 +2,7 @@
 
 #define BUZZER 48
 
-Audio_Manager::Audio_Manager(System& system_services) {
+Audio_Manager::Audio_Manager(systemQueues* system_queues):_system_queues(system_queues) {
     tone(BUZZER,500);
     vTaskDelay(100);
     tone(BUZZER,750);
