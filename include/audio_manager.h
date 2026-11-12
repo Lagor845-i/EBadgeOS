@@ -1,13 +1,13 @@
 #pragma once
 #include <arduino.h>
 
-#include "core_queues.h"
+#include "core.h"
 
 class Audio_Manager {
     public:
-        Audio_Manager(systemQueues* system_queues);
+        Audio_Manager(Core* system_core);
         void playTone(uint8_t frequency);
 
     private:
-        systemQueues* _system_queues;
+        Core* _system_core;
 };

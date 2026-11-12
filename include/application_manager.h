@@ -4,26 +4,22 @@
 #include <Arduino.h>
 #include <string.h>
 
-#include "core_queues.h"
+#include "core.h"
 #include "elf_symbols.h"
 
 class Application_Manager {
   public:
-    Application_Manager(systemQueues* system_queues);
-    void Start();
-    
-    //Api calls from application
-    bool requestELFFile(String file_loc);
-    bool quitApplication();
-    bool printToConsole(String text);
-    bool printToConsoleApp(String text);
+    Application_Manager(Core* system_core);
+    void Begin();
   
   private:
+    bool requestELFFile(std::string file_name);
+    bool quitApplication();
     bool bootFile(uint8_t* file_bytes);
-    uint8_t* recieveElfFile();
     bool sendAppApi();
 
-    systemQueues* _system_queues;
+
+    Core* _system_core;
     String app_folder;
     esp_elf_t current_app;
     String _change_app_to;

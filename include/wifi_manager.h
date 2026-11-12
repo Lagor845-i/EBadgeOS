@@ -1,11 +1,11 @@
 #pragma once
 #include <WiFi.h>
 
-#include "core_queues.h"
+#include "core.h"
 
 class Wifi_Manager {
   public:
-    Wifi_Manager(systemQueues* system_queues);
+    Wifi_Manager(Core* system_core);
     bool connectToNetwork(std::string ssid,std::string password);
     bool getWifiInfo();
 
@@ -14,5 +14,5 @@ class Wifi_Manager {
   
   private:
     bool _downloading = false;
-    systemQueues* _system_queues;
+    Core* _system_core;
 };

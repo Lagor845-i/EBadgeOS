@@ -1,61 +1,68 @@
-#include "services.h"
 #include "managers.h"
-#include "core_queues.h"
+#include "core.h"
 
-void startelflauncher(void* task_queues) {
-  Application_Manager* application_manager = new Application_Manager(static_cast<systemQueues*>(task_queues));
+void startelflauncher(void* core) {
+  Application_Manager* application_manager = new Application_Manager(static_cast<Core*>(core));
+  application_manager->Begin();
 }
 
-void startDebugManager(void* task_queues) {
-  Debug_Manager* debug_manager = new Debug_Manager(static_cast<systemQueues*>(task_queues));
+void startDebugManager(void* core) {
+  Debug_Manager* debug_manager = new Debug_Manager(static_cast<Core*>(core));
+  debug_manager->begin();
 }
 
-void startDisplay(void* task_queues) {
-  Display_Manager* display_manager = new Display_Manager(static_cast<systemQueues*>(task_queues));
+void startDisplay(void* core) {
+  Display_Manager* display_manager = new Display_Manager(static_cast<Core*>(core));
+  display_manager->begin();
 }
 
-void startLedManager(void* task_queues) {
-  Led_Manager* led_manager = new Led_Manager(static_cast<systemQueues*>(task_queues));
+void startLedManager(void* core) {
+  Led_Manager* led_manager = new Led_Manager(static_cast<Core*>(core));
+  led_manager->begin();
 }
 
-void startWifiManager(void* task_queues) {
-  Wifi_Manager* wifi_manager = new Wifi_Manager(static_cast<systemQueues*>(task_queues));
+void startWifiManager(void* core) {
+  Wifi_Manager* wifi_manager = new Wifi_Manager(static_cast<Core*>(core));
 }
 
-void startInputManager(void* task_queues) {
-  Input_Manager* input_manager = new Input_Manager(static_cast<systemQueues*>(task_queues));
+void startInputManager(void* core) {
+  Input_Manager* input_manager = new Input_Manager(static_cast<Core*>(core));
+  input_manager->begin();
 }
 
-void startFileSystemManager(void* task_queues) {
-  File_System_Manager* file_system_manager = new File_System_Manager(static_cast<systemQueues*>(task_queues));
+void startFileSystemManager(void* core) {
+  File_System_Manager* file_system_manager = new File_System_Manager(static_cast<Core*>(core));
+  file_system_manager->begin();
 }
 
-void startAudioManager(void* task_queues) {
-  Audio_Manager* audio_manager = new Audio_Manager(static_cast<systemQueues*>(task_queues));
+void startAudioManager(void* core) {
+  Audio_Manager* audio_manager = new Audio_Manager(static_cast<Core*>(core));
 }
 
-void startBluetoothManager(void* task_queues) {
-  Bluetooth_Manager* bluetooth_manager = new Bluetooth_Manager(static_cast<systemQueues*>(task_queues));
+void startBluetoothManager(void* core) {
+  Bluetooth_Manager* bluetooth_manager = new Bluetooth_Manager(static_cast<Core*>(core));
 }
 
-void startStatsManager(void* task_queues) {
-  Stats_Manager* stats_manager = new Stats_Manager(static_cast<systemQueues*>(task_queues));
+void startStatsManager(void* core) {
+  Stats_Manager* stats_manager = new Stats_Manager(static_cast<Core*>(core));
+  stats_manager->begin();
 }
 
 void setup() {
-  systemQueues* queues;
-  xTaskCreatePinnedToCore(startelflauncher,"ElfLauncher",4096,queues,3,nullptr,1);
-  xTaskCreate(startDisplay,"Display",4096,queues,3,nullptr);
-  xTaskCreate(startDebugManager,"Display",4096,queues,3,nullptr);
-  xTaskCreate(startLedManager,"Display",4096,queues,3,nullptr);
-  xTaskCreate(startWifiManager,"Display",4096,queues,3,nullptr);
-  xTaskCreate(startInputManager,"Display",4096,queues,3,nullptr);
-  xTaskCreate(startFileSystemManager,"Display",4096,queues,3,nullptr);
-  xTaskCreate(startAudioManager,"Display",4096,queues,3,nullptr);
-  xTaskCreate(startBluetoothManager,"Display",4096,queues,3,nullptr);
-  xTaskCreate(startStatsManager,"Display",4096,queues,3,nullptr);
+  Core* system_core;
+  xTaskCreatePinnedToCore(startelflauncher,"ElfLauncher",4096,system_core,3,nullptr,1);
+  xTaskCreate(startDisplay,"Display",4096,system_core,3,nullptr);
+  xTaskCreate(startDebugManager,"Display",4096,system_core,3,nullptr);
+  xTaskCreate(startLedManager,"Display",4096,system_core,3,nullptr);
+  xTaskCreate(startWifiManager,"Display",4096,system_core,3,nullptr);
+  xTaskCreate(startInputManager,"Display",4096,system_core,3,nullptr);
+  xTaskCreate(startFileSystemManager,"Display",4096,system_core,3,nullptr);
+  xTaskCreate(startAudioManager,"Display",4096,system_core,3,nullptr);
+  xTaskCreate(startBluetoothManager,"Display",4096,system_core,3,nullptr);
+  xTaskCreate(startStatsManager,"Display",4096,system_core,3,nullptr);
 }
 
 void loop() {
   
 }
+

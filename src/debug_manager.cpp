@@ -1,6 +1,6 @@
 #include "debug_manager.h"
 
-Debug_Manager::Debug_Manager(systemQueues* system_queues):_system_queues(system_queues) {
+Debug_Manager::Debug_Manager(Core* system_core):_system_core(system_core) {
     
 };
 
@@ -9,7 +9,7 @@ void Debug_Manager::begin() {
     _on = DEBUG;
     while (true) {
         queuePacket* packet = nullptr;
-        xQueueReceive(_system_queues->debug_manager,packet,portMAX_DELAY);
+        xQueueReceive(_system_core->queues.debug_manager,packet,portMAX_DELAY);
         switch (packet->operation) {
             case Print_System_Debug:
                 systemLog(String(*static_cast<std::string*>(packet->data)->c_str()));

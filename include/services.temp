@@ -3,8 +3,6 @@
 #include <Arduino.h>
 #include <SD.h>
 
-#include "os.h"
-
 struct System {
   //Debug functions
   std::function<void(String)> systemLog; //s

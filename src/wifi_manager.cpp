@@ -1,6 +1,6 @@
 #include "wifi_manager.h"
 
-Wifi_Manager::Wifi_Manager(systemQueues* system_queues):_system_queues(system_queues) {
+Wifi_Manager::Wifi_Manager(Core* system_core):_system_core(system_core) {
 
 };
 

@@ -3,7 +3,9 @@
 
 Adafruit_NeoPixel led_strip(LED_COUNT,LED_PIN,NEO_GRB + NEO_KHZ800);
 
-Led_Manager::Led_Manager(systemQueues* system_queues):_system_queues(system_queues) {};
+Led_Manager::Led_Manager(Core* system_core):_system_core(system_core) {
+
+};
 
 void Led_Manager::begin() {
     led_strip.begin();
@@ -11,12 +13,13 @@ void Led_Manager::begin() {
     led_strip.show();
     while (true) {
         queuePacket* packet = nullptr;
-        xQueueReceive(_system_queues->led_manager,packet,portMAX_DELAY);
+        xQueueReceive(_system_core->queues.led_manager,packet,portMAX_DELAY);
         switch (packet->operation) {
             case 0:
                 break;
             case 1:
                 clearLeds();
+                break;
         }
     }
 };

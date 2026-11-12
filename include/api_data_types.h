@@ -1,6 +1,7 @@
 #pragma once
 
-#include <string.h>
+#include <Arduino.h>
+#include <string>
 
 struct SSIDS {
     std::string* ssids[10];
@@ -17,16 +18,7 @@ struct downloadRequest {
     std::string download_location;
 };
 
-struct Input {
-    int a;
-    int b;
-    int u;
-    int d;
-    int l;
-    int r;
-    float jsx;
-    float jsy;
-    float accel_x;
-    float accel_y;
-    float accel_z;
+struct queueFile {
+    std::string file_name;
+    uint8_t* data;
 };

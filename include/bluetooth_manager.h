@@ -1,12 +1,12 @@
 #pragma once
 #include <NimBLEDevice.h>
 
-#include "core_queues.h"
+#include "core.h"
 
 class Bluetooth_Manager {
   public:
-    Bluetooth_Manager(systemQueues* system_queues);
+    Bluetooth_Manager(Core* system_core);
 
   private:
-    systemQueues* _system_queues;
+    Core* _system_core;
 };

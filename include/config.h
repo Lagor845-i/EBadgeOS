@@ -1,11 +1,15 @@
+#include <string.h>
 
 //Shows current firmware version. PLEASE RAISE NUMBER IF CHANGING ELF API!!!
 #define FIRMWARE_VERSION 1
 
 //Where on the SD card the applications are stored
-#define APP_FOLDER "/apps/"
-#define BOOT_APP "Boot.app"
-#define BOOT_MENU "Menu.app"
+
+#define INTERNAL_STORAGE std::string("local//")
+#define EXTERNAL_STORAGE std::string("SD//")
+#define APP_FOLDER std::string("apps/")
+#define BOOT_APP INTERNAL_STORAGE + APP_FOLDER + std::string("Boot.app")
+#define BOOT_MENU INTERNAL_STORAGE + APP_FOLDER + std::string("Menu.app")
 
 //Allows debugging over Serial
 #define DEBUG true

@@ -1,13 +1,13 @@
 #include <Arduino.h>
 
-#include "core_queues.h"
+#include "core.h"
 
 #define DEBUG_ON true
 #define DEBUG_OFF false
 
 class Debug_Manager {
     public:
-        Debug_Manager(systemQueues* system_queues);
+        Debug_Manager(Core* system_core);
         void begin();
         void stop();
         void set(bool debug_value);
@@ -16,5 +16,5 @@ class Debug_Manager {
     
     private:
         bool _on = false;
-        systemQueues* _system_queues;
+        Core* _system_core;
 };

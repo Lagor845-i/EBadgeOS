@@ -1,6 +1,6 @@
 #include "display_manager.h"
 
-Display_Manager::Display_Manager(systemQueues* system_queues):_system_queues(system_queues) {
+Display_Manager::Display_Manager(Core* system_core):_system_core(system_core) {
     _width = SCREEN_WIDTH;
     _height = SCREEN_HEIGHT;
 };
@@ -17,17 +17,37 @@ void Display_Manager::begin() {
     _notification_time_limit = 0;
 
     while (true) {
-        vTaskDelay(1);
+        queuePacket* packet;
+        if (xQueueReceive(_system_core->queues.display_manager,packet,portMAX_DELAY) == pdTRUE) {
+            switch (packet->operation) {
+                case Reset_Display:
+            
+                break;
+
+                case Update_Display:
+                
+                break;
+
+                case Draw_String:
+
+                break;
+
+                case Draw_Line:
+
+                break;
+
+                case Draw_Pixel:
+
+                break;
+            }
+            delete packet;
+        }
     }
 };
 
 void Display_Manager::forceLovyanGFXSymbols() {
     LGFX_Sprite* sprite = new LGFX_Sprite();
     delete sprite;
-}
-
-void Display_Manager::setDisplayBuffer(LGFX_Sprite* buffer) {
-    _display_buffer = buffer;
 }
 
 void Display_Manager::updateDisplay() {

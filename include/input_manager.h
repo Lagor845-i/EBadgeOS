@@ -1,14 +1,15 @@
 #pragma once
 
-#include "core_queues.h"
+#include "core.h"
 
 class Input_Manager {
     public:
-        Input_Manager(systemQueues* system_queues);
-        Input sysGetInput();
+        Input_Manager(Core* system_core);
+        void sysGetInput();
         void begin();
 
     private:
+        void readAccelerometer(float *buffer);
         Input stuff;
-        systemQueues* _system_queues;
+        Core* _system_core;
 };

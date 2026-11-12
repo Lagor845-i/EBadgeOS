@@ -1,13 +1,15 @@
 #include <Arduino.h>
+#include <string.h>
 
-#include "core_queues.h"
+#include "core.h"
 
 class Stats_Manager {
     public:
-        Stats_Manager(systemQueues* system_queues);
+        Stats_Manager(Core* system_core);
+        void begin();
         void reportStats();
         void displayStats();
 
     private:
-        systemQueues* _system_queues;
+        Core* _system_core;
 };

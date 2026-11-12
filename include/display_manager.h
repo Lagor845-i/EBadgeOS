@@ -4,12 +4,12 @@
 #include <string.h>
 
 #include "display_config.h"
-#include "core_queues.h"
+#include "core.h"
 
 class Display_Manager {
 public:
     
-    Display_Manager(systemQueues* system_queues);
+    Display_Manager(Core* system_core);
 
     void begin();
     void forceLovyanGFXSymbols();
@@ -39,7 +39,7 @@ private:
     uint16_t _height;
 
     //Allows this to call functions from around the system if needed
-    systemQueues* _system_queues;
+    Core* _system_core;
 
     LGFX_Sprite* _display_buffer;
 
